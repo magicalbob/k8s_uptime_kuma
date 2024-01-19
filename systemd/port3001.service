@@ -1,0 +1,15 @@
+[Unit]
+Description=Kubectl Port Forward 3001
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=vagrant
+Group=vagrant
+Type=simple
+ExecStart=/bin/bash -c "kubectl port-forward service/uptime-kuma-service -n uptime-kuma --address 192.168.0.10 3001:3001"
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

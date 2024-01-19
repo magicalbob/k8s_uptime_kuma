@@ -55,6 +55,6 @@ if [ "X{$USE_KIND}" == "XX" ];then
 else
   export NODE_NAME=$(kubectl get nodes | grep -v ^NAME|grep -v control-plane|cut -d\  -f1|head -1)
   envsubst < uptime-kuma.pv.linux.template > uptime-kuma.pv.yml
-  echo mkdir -p ${PWD}/uptime-kuma|ssh -o StrictHostKeyChecking=no ${NODE_NAME}
+  echo mkdir -p ${PWD}/uptime-kuma-data|ssh -o StrictHostKeyChecking=no ${NODE_NAME}
 fi
 kubectl apply -f uptime-kuma.pv.yml

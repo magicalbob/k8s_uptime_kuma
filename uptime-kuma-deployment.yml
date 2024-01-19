@@ -19,11 +19,25 @@ spec:
           ports:
             - containerPort: 3001
           volumeMounts:
-            - name: data-volume
-              mountPath: /app/data
+            - name: uptime-kuma-data
+              mountPath: /uptime-kuma-data
       volumes:
-        - name: data-volume
-          emptyDir: {}
+        - name: uptime-kuma-data
+          persistentVolumeClaim:
+            claimName: uptime-kuma-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: uptime-kuma-data
+  namespace: uptime-kuma
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: local-storage
 
 ---
 apiVersion: v1

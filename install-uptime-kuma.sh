@@ -49,7 +49,7 @@ fi
 kubectl apply -f uptime-kuma-deployment.yml
 
 # sort out persistent volume
-if [ "X{$USE_KIND}" == "XX" ];then
+if [ "X${USE_KIND}" == "XX" ];then
   export NODE_NAME=$(kubectl get nodes |grep control-plane|cut -d\  -f1|head -1)
   envsubst < uptime-kuma.pv.kind.template > uptime-kuma.pv.yml
 else

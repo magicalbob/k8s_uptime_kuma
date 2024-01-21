@@ -36,11 +36,10 @@ fi
 
 if [ "X${USE_KIND}" == "XX" ]; then
     # Make sure cluster exists if Mac
-    kind  get clusters 2>&1 | grep "kind-uptime-kuma"
-    if [ $? -gt 0 ]
+    if ! kind get clusters 2>&1 | grep -q "kind-uptime-kuma"
     then
-        envsubst < kind-config.yaml.template > kind-config.yaml
-        kind create cluster --config kind-config.yaml --name kind-uptime-kuma
+      envsubst < kind-config.yaml.template > kind-config.yaml
+      kind create cluster --config kind-config.yaml --name kind-uptime-kuma
     fi
 
     # Make sure create cluster succeeded

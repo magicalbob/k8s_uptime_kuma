@@ -12,24 +12,25 @@ browser = webdriver.Chrome()
 UPTIME_IP=os.environ.get("UPTIME_IP")
 
 # Open the Uptime Kuma setup page
-url = f"http://{UPTIME_IP}:3001/setup"
+url = f"http://{UPTIME_IP}:3001/"
 browser.get(url)
 
-# Find the username, password, and repeat password fields
-username_field = browser.find_element(By.ID, "floatingInput")
-password_field = browser.find_element(By.ID, "floatingPassword")
-repeat_password_field = browser.find_element(By.ID, "repeat")
-
-# Fill in the fields
-username_field.send_keys(os.environ.get("UPTIME_USERNAME"))
-password_field.send_keys(os.environ.get("UPTIME_PASSWORD"))
-repeat_password_field.send_keys(os.environ.get("UPTIME_PASSWORD"))
-
-# Find and click the "Create" button
-create_button = browser.find_element(By.XPATH, '//button[@data-cy="submit-setup-form"]')
-create_button.click()
-
-# Optionally, you can add code to wait for the registration to complete or handle any success/error messages
+if "setup" in browser.current_url:
+    # Find the username, password, and repeat password fields
+    username_field = browser.find_element(By.ID, "floatingInput")
+    password_field = browser.find_element(By.ID, "floatingPassword")
+    repeat_password_field = browser.find_element(By.ID, "repeat")
+    
+    # Fill in the fields
+    username_field.send_keys(os.environ.get("UPTIME_USERNAME"))
+    password_field.send_keys(os.environ.get("UPTIME_PASSWORD"))
+    repeat_password_field.send_keys(os.environ.get("UPTIME_PASSWORD"))
+    
+    # Find and click the "Create" button
+    create_button = browser.find_element(By.XPATH, '//button[@data-cy="submit-setup-form"]')
+    create_button.click()
+else:
+    print("User already exists")
 
 # Close the WebDriver
 browser.quit()

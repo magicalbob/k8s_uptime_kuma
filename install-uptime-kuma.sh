@@ -1,3 +1,23 @@
+#!/usr/bin/env bash
+
+if [ -z "$UPTIME_IP" ]
+then
+  echo "Environment variable UPTIME_IP has to be provided"
+  exit 1
+fi
+
+if [ -z "$UPTIME_USERNAME" ]
+then
+  echo "Environment variable UPTIME_USERNAME has to be provided"
+  exit 2
+fi
+
+if [ -z "$UPTIME_PASSWORD" ]
+then
+  echo "Environment variable UPTIME_PASSWORD has to be provided"
+  exit 3
+fi
+
 unset USE_KIND
 # Check if kubectl is available in the system
 if kubectl 2>/dev/null >/dev/null; then
@@ -38,11 +58,13 @@ kubectl apply -f https://dev.ellisbs.co.uk/files/components.yaml
 # install local storage
 kubectl apply -f  local-storage-class.yml
 
+export UPTIME_KUMA_NAMESPACE=uptime-kuma
+
 # create uptime-kuma namespace, if it doesn't exist
-kubectl get ns uptime-kuma 2> /dev/null
+kubectl get ns ${UPTIME_KUMA_NAMESPACE} 2> /dev/null
 if [ $? -eq 1 ]
 then
-    kubectl create namespace uptime-kuma
+    kubectl create namespace ${UPTIME_KUMA_NAMESPACE}
 fi
 
 # create deployment
@@ -58,3 +80,14 @@ else
   echo mkdir -p ${PWD}/uptime-kuma-data|ssh -o StrictHostKeyChecking=no ${NODE_NAME}
 fi
 kubectl apply -f uptime-kuma.pv.yml
+
+# Wait for pod to be running
+until kubectl get pod -n ${UPTIME_KUMA_NAMESPACE} | grep 1/1; do
+  sleep 5
+done
+
+# Set up port-forward
+kubectl port-forward service/uptime-kuma-service -n uptime-kuma --address ${UPTIME_IP} 3001:3001 &
+
+# Create user from UPTIME_IP/UPTIME_USERNAME/UPTIME_PASSWORD variables (will fail if already present in PV)
+python/create_user.py

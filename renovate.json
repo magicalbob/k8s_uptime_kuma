@@ -1,3 +1,21 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json"
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "schedule": ["every weekend"],
+  "autodiscover": true,
+  "baseBranches": ["master"],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "dependencies"
+    },
+    {
+      "matchUpdateTypes": ["devDependencies"],
+      "groupName": "devDependencies"
+    }
+  ],
+  "ignore": [
+    "^dependency-name$",
+    "^another-dependency$"
+  ],
+  "prConcurrentLimit": 1
 }

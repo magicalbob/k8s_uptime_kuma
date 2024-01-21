@@ -43,8 +43,7 @@ if [ "X${USE_KIND}" == "XX" ]; then
     fi
 
     # Make sure create cluster succeeded
-    kind  get clusters 2>&1 | grep "kind-uptime-kuma"
-    if [ $? -gt 0 ]
+    if ! kind get clusters 2>&1 | grep -q "kind-uptime-kuma"
     then
         echo "Creation of cluster failed. Aborting."
         exit 666

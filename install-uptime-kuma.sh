@@ -77,7 +77,7 @@ else
   NODE_NAME=$(kubectl get nodes | grep -v ^NAME|grep -v control-plane|cut -d\  -f1|head -1)
   export NODE_NAME
   envsubst < uptime-kuma.pv.linux.template > uptime-kuma.pv.yml
-  echo mkdir -p ${PWD}/uptime-kuma-data|ssh -o StrictHostKeyChecking=no ${NODE_NAME}
+  echo mkdir -p "${PWD}/uptime-kuma-data"|ssh -o StrictHostKeyChecking=no "${NODE_NAME}"
 fi
 kubectl apply -f uptime-kuma.pv.yml
 
@@ -87,7 +87,7 @@ until kubectl get pod -n ${UPTIME_KUMA_NAMESPACE} | grep 1/1; do
 done
 
 # Set up port-forward
-kubectl port-forward service/uptime-kuma-service -n uptime-kuma --address ${UPTIME_IP} 3001:3001 &
+kubectl port-forward service/uptime-kuma-service -n uptime-kuma --address "${UPTIME_IP}" 3001:3001 &
 
 # Create user from UPTIME_IP/UPTIME_USERNAME/UPTIME_PASSWORD variables (will fail if already present in PV)
 python/create_user.py

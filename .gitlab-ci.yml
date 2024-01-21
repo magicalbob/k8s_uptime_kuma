@@ -5,6 +5,6 @@ shellcheck:
   stage: shellcheck
   tags:
     - linux
-  image: koalaman/shellcheck-alpine
   script:
+    - sudo apt-get install shellcheck
     - shellcheck install-uptime-kuma.sh

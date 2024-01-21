@@ -1,0 +1,10 @@
+stages:
+ - shellcheck
+
+shellcheck:
+  stage: shellcheck
+  tags:
+    - linux
+  image: koalaman/shellcheck-alpine
+  script:
+    - shellcheck install-uptime-kuma.sh

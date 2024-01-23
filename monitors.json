@@ -1,0 +1,24 @@
+[
+  {
+    "name": "Gitlab",
+    "url": "https://gitlab.com",
+    "type": "http",
+    "expiryNotification": true,
+    "ignoreTls": true
+  },
+  {
+    "name": "Facebook",
+    "url": "https://facebook.com",
+    "type": "http",
+    "expiryNotification": true,
+    "ignoreTls": true
+  },
+  {
+    "name": "Google",
+    "url": "https://google.com",
+    "type": "http",
+    "expiryNotification": true,
+    "ignoreTls": true
+  }
+]
+

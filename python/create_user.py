@@ -19,22 +19,19 @@ print(" Open the Uptime Kuma setup page")
 url = f"http://0.0.0.0:3001/"
 browser.get(url)
 
-if "setup" in browser.current_url:
-    print(" Find the username, password, and repeat password fields")
-    username_field = browser.find_element(By.ID, "floatingInput")
-    password_field = browser.find_element(By.ID, "floatingPassword")
-    repeat_password_field = browser.find_element(By.ID, "repeat")
+print(" Find the username, password, and repeat password fields")
+username_field = browser.find_element(By.ID, "floatingInput")
+password_field = browser.find_element(By.ID, "floatingPassword")
+repeat_password_field = browser.find_element(By.ID, "repeat")
 
-    print(" Fill in the fields")
-    username_field.send_keys(os.environ.get("UPTIME_USERNAME"))
-    password_field.send_keys(os.environ.get("UPTIME_PASSWORD"))
-    repeat_password_field.send_keys(os.environ.get("UPTIME_PASSWORD"))
+print(" Fill in the fields")
+username_field.send_keys(os.environ.get("UPTIME_USERNAME"))
+password_field.send_keys(os.environ.get("UPTIME_PASSWORD"))
+repeat_password_field.send_keys(os.environ.get("UPTIME_PASSWORD"))
 
-    print(" Find and click the Create button")
-    create_button = browser.find_element(By.XPATH, '//button[@data-cy="submit-setup-form"]')
-    create_button.click()
-else:
-    print("User already exists")
+print(" Find and click the Create button")
+create_button = browser.find_element(By.XPATH, '//button[@data-cy="submit-setup-form"]')
+create_button.click()
 
 print(" Close the WebDriver")
 browser.quit()

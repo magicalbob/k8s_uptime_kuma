@@ -15,10 +15,8 @@ firefox_options.add_argument("--disable-gpu")  # Disable GPU acceleration, often
 # Use the Firefox WebDriver
 browser = webdriver.Firefox(options=firefox_options)
 
-UPTIME_IP = os.environ.get("UPTIME_IP")
-
 print(" Open the Uptime Kuma setup page")
-url = f"http://{UPTIME_IP}:3001/"
+url = f"http://0.0.0.0:3001/"
 browser.get(url)
 
 if "setup" in browser.current_url:

@@ -18,13 +18,14 @@ spec:
           image: louislam/uptime-kuma:1
           ports:
             - containerPort: 3001
-          volumeMounts:
-            - name: uptime-kuma-data
-              mountPath: /app/data
-      volumes:
-        - name: uptime-kuma-data
-          persistentVolumeClaim:
-            claimName: uptime-kuma-data
+# Removed PV
+#          volumeMounts:
+#            - name: uptime-kuma-data
+#              mountPath: /app/data
+#      volumes:
+#        - name: uptime-kuma-data
+#          persistentVolumeClaim:
+#            claimName: uptime-kuma-data
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

@@ -68,18 +68,19 @@ fi
 # create deployment
 kubectl apply -f uptime-kuma-deployment.yml
 
-# sort out persistent volume
-if [ "X${USE_KIND}" == "XX" ];then
-  NODE_NAME=$(kubectl get nodes |grep control-plane|cut -d\  -f1|head -1)
-  export NODE_NAME
-  envsubst < uptime-kuma.pv.kind.template > uptime-kuma.pv.yml
-else
-  NODE_NAME=$(kubectl get nodes | grep -v ^NAME|grep -v control-plane|cut -d\  -f1|head -1)
-  export NODE_NAME
-  envsubst < uptime-kuma.pv.linux.template > uptime-kuma.pv.yml
-  echo mkdir -p "${PWD}/uptime-kuma-data"|ssh -o StrictHostKeyChecking=no "${NODE_NAME}"
-fi
-kubectl apply -f uptime-kuma.pv.yml
+# Removed set up of PV
+## sort out persistent volume
+#if [ "X${USE_KIND}" == "XX" ];then
+#  NODE_NAME=$(kubectl get nodes |grep control-plane|cut -d\  -f1|head -1)
+#  export NODE_NAME
+#  envsubst < uptime-kuma.pv.kind.template > uptime-kuma.pv.yml
+#else
+#  NODE_NAME=$(kubectl get nodes | grep -v ^NAME|grep -v control-plane|cut -d\  -f1|head -1)
+#  export NODE_NAME
+#  envsubst < uptime-kuma.pv.linux.template > uptime-kuma.pv.yml
+#  echo mkdir -p "${PWD}/uptime-kuma-data"|ssh -o StrictHostKeyChecking=no "${NODE_NAME}"
+#fi
+#kubectl apply -f uptime-kuma.pv.yml
 
 # Wait for pod to be running
 until kubectl get pod -n ${UPTIME_KUMA_NAMESPACE} | grep 1/1; do

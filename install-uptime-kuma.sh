@@ -89,25 +89,3 @@ done
 
 # Set up port-forward
 kubectl port-forward service/uptime-kuma-service -n uptime-kuma --address "${UPTIME_IP}" 3001:3001 &
-
-# Get name of pod for copying files to and executing things on
-UPTIME_POD=$(kubectl get pod -n ${UPTIME_KUMA_NAMESPACE} | grep 1/1 | cut -d\  -f1)
-
-# Copy the python code to the pod
-kubectl cp requirements.txt "${UPTIME_POD}":/root/ -n "${UPTIME_KUMA_NAMESPACE}"
-kubectl cp python/create_user.py "${UPTIME_POD}":/root/ -n "${UPTIME_KUMA_NAMESPACE}"
-kubectl cp python/create_monitors.py "${UPTIME_POD}":/root/ -n "${UPTIME_KUMA_NAMESPACE}"
-kubectl cp monitors.json "${UPTIME_POD}":/app/ -n "${UPTIME_KUMA_NAMESPACE}"
-
-# Update the pod and install firefox
-kubectl exec pod/"${UPTIME_POD}" -n "${UPTIME_KUMA_NAMESPACE}" -- sh -c "apt-get update"
-kubectl exec pod/"${UPTIME_POD}" -n "${UPTIME_KUMA_NAMESPACE}" -- sh -c "apt-get install -y firefox-esr"
-
-# Now install requirements.txt & run the python to create user
-kubectl exec -t "${UPTIME_POD}" -n "${UPTIME_KUMA_NAMESPACE}" -- sh -c "pip3 install -r ~/requirements.txt"
-kubectl exec -t "${UPTIME_POD}" -n "${UPTIME_KUMA_NAMESPACE}" -- sh -c "export UPTIME_USERNAME=$UPTIME_USERNAME; export UPTIME_PASSWORD=$UPTIME_PASSWORD; python3 ~/create_user.py"
-
-# Create monitors
-kubectl exec -t "${UPTIME_POD}" -n "${UPTIME_KUMA_NAMESPACE}" -- sh -c "pip3 install uptime_kuma_api"
-kubectl exec -t "${UPTIME_POD}" -n "${UPTIME_KUMA_NAMESPACE}" -- sh -c "export UPTIME_URL=http://0.0.0.0:3001; export UPTIME_USERNAME=$UPTIME_USERNAME; export UPTIME_PASSWORD=$UPTIME_PASSWORD; python3 ~/create_monitors.py"
-
